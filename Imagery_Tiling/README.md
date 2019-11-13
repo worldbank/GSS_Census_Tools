@@ -4,9 +4,9 @@ In order to support the use of the satellite basemap provided to GSS by the Worl
 ## How to perform tiling
 I have tested the [rio tiler](https://github.com/mapbox/rio-mbtiles) package, which has proven successful in generating mbtiles using the following command
 
-'''
+```
 rio mbtiles -o C:\folder\outTile.mbtiles --overwrite -f PNG --zoom-levels 15..16 C:\folder\031113120110.tif
-'''
+```
 
 However, this has not proven useful concerning file size when testing against a single imagery tile (the country has 2700 tiles, and the test district I am using is covered using 50 tiles):
 
