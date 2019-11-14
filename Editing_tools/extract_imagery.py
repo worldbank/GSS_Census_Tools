@@ -61,11 +61,17 @@ def copyFiles(file_list, outfolder, fpLayer, verbose=True):
         shutil.copy(imgFile, os.path.join(outfolder, os.path.basename(imgFile)))
         if verbose:
             print(imgFile)
+'''
 fp_layer = r"E:\GHANA_Data\basemap\raster_tiles_extents.shp"
 #extent_layer = r"C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\UNEDITED_DSITRICTS\TANO NORTH.gdb\EAs\unedited_eas"
 #extent_layer = r"C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\UNEDITED_DSITRICTS\KARLE_KLOTE_fieldTest.shp"
 extent_layer = r"C:/Users/WB411133/OneDrive - WBG/AAA_BPS/GOST/Projects/Ghana_Census_Support/Data/GSS_Data/UNEDITED_DSITRICTS/Tano North.shp"
 output_folder = r"E:\GHANA_Data\basemap\selected"
+'''
+fp_layer = arcpy.GetParameterAsText(1)
+extent_layer = arcpy.GetParameterAsText(0)
+output_folder = arcpy.GetParameterAsText(2)
+
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
