@@ -9,7 +9,6 @@
 # Import arcpy module
 import arcpy, os, sys
 
-#inputFolder = "C:\\Users\\WB411133\\OneDrive - WBG\\AAA_BPS\\GOST\\Projects\\Ghana_Census_Support\\Data\\GSS_Data\\UNEDITED_DSITRICTS\\2020 BR ASUNAFO SOUTH1"
 inputFolder = arcpy.GetParameterAsText(0)
 gss_projection = "PROJCS['Custom',GEOGCS['GCS_Leigon',DATUM['D_Leigon',SPHEROID['Clarke_1880_RGS',6378249.145,293.465]],PRIMEM['Greenwich',0.0],UNIT['Degree',0.0174532925199433]],PROJECTION['Transverse_Mercator'],PARAMETER['False_Easting',899998.392388452],PARAMETER['False_Northing',0.0],PARAMETER['Central_Meridian',-1.0],PARAMETER['Scale_Factor',0.99975],PARAMETER['Latitude_Of_Origin',4.666666666666667],UNIT['Foot',0.3048]]"                 
 wgs84_projection = "GEOGCS['GCS_WGS_1984',DATUM['D_WGS_1984',SPHEROID['WGS_1984',6378137.0,298.257223563]],PRIMEM['Greenwich',0.0],UNIT['Degree',0.0174532925199433]]"
@@ -27,9 +26,11 @@ for root, dirs, files in os.walk(inputFolder):
             
 for shp in inShps:
     output_shapefile = os.path.join(outputFolder, os.path.basename(shp).replace(".shp", "_WGS84.shp"))
-    # Process: Define Projection
-    arcpy.DefineProjection_management(shp, gss_projection)
-
+    try:
+        # Process: Define Projection
+        arcpy.DefineProjection_management(shp, gss_projection)
+    except:
+        pass
     # Process: Project
     arcpy.Project_management(shp, output_shapefile, wgs84_projection)
 
