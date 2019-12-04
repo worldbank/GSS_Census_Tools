@@ -1,7 +1,19 @@
 import time, arcpy, os, sys, shutil, logging
 
+def DetermineOrientation(inFile, orientationField="ORIENT"):
+    '''
+    inFile = r'C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\2020 GUSHIEGU\TYPE 2\gushiegu final1.shp'
+    '''
+    with arcpy.da.UpdateCursor(inFile, ['OID@','SHAPE@',orientationField]) as cur:
+        for feat in cur:
+            orientation = "LANDSCAPE"
+            if feat[1].extent.width < feat[1].extent.height:
+                orientation = "PORTRAIT"
+            feat[2] = orientation
+            cur.updateRow(feat)
+
 class mappingDistrict(object):
-    ''' DEBUGGINGE
+    ''' DEBUGGING
     districtFolder = r'C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\EDITED_DISTRICTS\2020 GUSHIEGU\TYPE 2'
     t2Map = r'C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\t2Map.mxd'
     t3Map = r'C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\t3Map.mxd'
@@ -99,23 +111,10 @@ feature_name = "LOC_NAME"         # column containing unique name for each featu
 labelFields = ["FIRST_DIST",feature_name,"FIRST_TYP"] # columns to populate text on map
 outputImage = "C:/temp/GSS_Maps/SA_Maps.pdf"           #Output filename, make sure folder exists
 
-createMapFromMXD_loop(mxd, outputImage, focal_layer, feature_name, labelFields, totalEA=3, saveMap=False)
-
-
-
-
-inFile = r'C:\Users\WB411133\OneDrive - WBG\AAA_BPS\GOST\Projects\Ghana_Census_Support\Data\GSS_Data\2020 GUSHIEGU\TYPE 2\gushiegu final1.shp'
-with arcpy.da.UpdateCursor(inFile, ['OID@','SHAPE@','ORIENT']) as cur:
-    for feat in cur:
-        orientation = "LANDSCAPE"
-        if feat[1].extent.width < feat[1].extent.height:
-            orientation = "PORTRAIT"
-        feat[2] = orientation
-        cur.updateRow(feat)
-
-
-        
-def add5(x):
-    return(x + 5)
-    
-add5(10)
+createMapFromMXD_loop(mxd, 
+                      outputImage, 
+                      focal_layer, 
+                      feature_name, 
+                      labelFields, 
+                      totalEA=3,        #Set this number to be very high (3000) in order to process everything
+                      saveMap=False)    #Set this to True in order to save a mxd of each EA
